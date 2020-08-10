@@ -4,14 +4,14 @@
     const Gun = require('gun')
     const _ = require('lodash')
 
-    if (cluster.isMaster) {
-        return cluster.fork() && cluster.on('exit', function () { cluster.fork() })
-    }
-
     const config = {
         port: process.env.PORT || 8765,
         host: 'localhost'
     };
+
+    if (cluster.isMaster) {
+        return cluster.fork() && cluster.on('exit', function () { cluster.fork() })
+    }
 
     const trimSoul = data => {
         if (!data || !data['_'] || typeof data['_'] !== 'object') return data
