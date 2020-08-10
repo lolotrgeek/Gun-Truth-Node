@@ -1,0 +1,51 @@
+<html>
+
+<body>
+    Test Value: <div id='test'></div>
+    <button onclick="setValid()">Set Valid</button>
+    <button onclick="setNull()">Set Null</button>
+    <button onclick="dumper()">Dump</button>
+    <ul id="dump">
+
+    </ul>
+</body>
+<script src='../node_modules/gun/gun.js' type='text/javascript'></script>
+<script>
+    const gun = new Gun({ peers: ['http://localhost:8765/gun'] })
+    // // test valid value
+    function setValid() {
+        gun.get('tests').get('truth').put('valid!')
+    }
+
+    // // test null value
+    function setNull() {
+        gun.get('tests').get('truth').put(null)
+    }
+
+    // test undefined value
+    // gun.get('tests').get('truth').put(undefined)
+    // gun.get('tests').get('truth').put(NaN)
+
+    gun.get('tests').get('truth').on((data, key) => {
+        console.log(data)
+        document.getElementById('test').innerHTML = data
+    })
+
+    function addToList(item) {
+        var node = document.createElement("li");
+        var textnode = document.createTextNode(item);
+        node.appendChild(textnode);
+        document.getElementById("dump").appendChild(node)
+    }
+
+    //NEXT: gun dump function
+    function dumper() {
+        let dump = document.getElementById("dump")
+        dump.innerHTML = '<li>List</li>'
+        gun.map().on((data, key) => {
+            addToList(data)
+        })
+    }
+</script>
+
+</html>

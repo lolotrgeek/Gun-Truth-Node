@@ -1,0 +1,15 @@
+{
+  "name": "gun_truth",
+  "version": "1.0.0",
+  "description": "maintains a truthful graph where all entries are remembered",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lolotrgeek",
+  "license": "MIT",
+  "dependencies": {
+    "gun": "^0.2020.520",
+    "lodash": "^4.17.19"
+  }
+}
