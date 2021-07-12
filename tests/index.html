@@ -11,7 +11,10 @@
 </body>
 <script src='../node_modules/gun/gun.js' type='text/javascript'></script>
 <script>
-    const gun = new Gun({ peers: ['http://localhost:8765/gun'] })
+    const remote = 'https://tabsync.herokuapp.com/gun'
+    const network = 'http://192.168.1.183:8765/gun'
+    const local = 'http://localhost:8765/gun'
+    const gun = new Gun({ peers: [local] })
     // // test valid value
     function setValid() {
         gun.get('tests').get('truth').put('valid!')
@@ -41,9 +44,17 @@
     //NEXT: gun dump function
     function dumper() {
         let dump = document.getElementById("dump")
-        dump.innerHTML = '<li>List</li>'
-        gun.map().on((data, key) => {
-            addToList(data)
+        dump.innerHTML = '<li>LIST</li>'
+        gun.get('tabs').map().on((data, key) => {
+            addToList('Tabs')
+            let tabs = JSON.parse(data.value).tabGroups
+            tabs.map(tab => {
+                console.log(tab.id)
+                addToList(tab.id)
+            })
+            gun.get('tests').once((data, key) => {
+                addToList(data)
+            })
         })
     }
 </script>
